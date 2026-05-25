@@ -15,7 +15,7 @@ const navLinks = [
 
 const socials = [
   { href: 'https://instagram.com',        icon: Camera,         label: 'Instagram' },
-  { href: 'https://wa.me/6281234567890',  icon: MessageCircle,  label: 'WhatsApp' },
+  { href: 'https://wa.me/6283143957624',  icon: MessageCircle,  label: 'WhatsApp' },
   { href: '#lokasi',                       icon: MapPin,         label: 'Maps', scroll: true },
 ]
 
