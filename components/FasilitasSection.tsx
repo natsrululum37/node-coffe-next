@@ -94,8 +94,7 @@ export default function FasilitasSection() {
               />
               {/* Overlay label */}
               <div className="fas-image-badge">
-                <MapPin size={11} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle', opacity: 0.7 }} />
-                Node Coffee, Yogyakarta
+                <MapPin size={12} style={{ display: 'inline', marginTop: '-2px' }} /> Node Coffee, Yogyakarta
               </div>
             </div>
 

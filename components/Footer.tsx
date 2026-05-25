@@ -42,16 +42,14 @@ export default function Footer() {
           {/* Brand */}
           <div className="footer-brand-col">
             <div className="footer-logo">
-              <div className="footer-logo-img-wrap">
-                <Image
-                  src="/img/logo/logo.webp"
-                  alt="Node Coffee Logo"
-                  width={32}
-                  height={32}
-                  style={{ objectFit: 'contain' }}
-                />
-              </div>
-              <span className="footer-logo-text">Node Coffee</span>
+              <Image
+                src="/img/logo/logo.webp"
+                alt="Node Coffee Logo"
+                width={24}
+                height={24}
+                style={{ objectFit: 'contain' }}
+              />
+              <span>Node Coffee</span>
             </div>
             <p className="footer-tagline">
               Specialty coffee &amp; coworking space untuk mahasiswa

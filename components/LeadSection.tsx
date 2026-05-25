@@ -4,29 +4,28 @@ import { useState } from 'react'
 import {
   Gift, ShieldCheck, Check,
   MapPin, Building2, Clock, Navigation, Car, AlertTriangle, SendHorizonal,
-  Wifi, Zap, Coffee, AlertCircle, Timer, CheckCircle
+  Wifi, Zap, Coffee, Frown, CheckCircle2
 } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
 
 const pasItems = [
   {
     type: 'p',
     label: 'Masalah',
-    Icon: AlertCircle,
+    icon: <Frown size={20} strokeWidth={2.5} />,
     title: 'Kafe ramai, koneksi tidak stabil, colokan terbatas.',
     desc: 'Tempat kerja cepat penuh, Wi-Fi terbagi, dan antrean bikin waktu terbuang.',
   },
   {
     type: 'a',
     label: 'Dampak',
-    Icon: Timer,
+    icon: <Clock size={20} strokeWidth={2.5} />,
     title: 'Tugas tertunda, deadline mepet.',
     desc: 'Video call patah, upload gagal, dan fokus kerja pecah.',
   },
   {
     type: 's',
     label: 'Solusi',
-    Icon: CheckCircle,
+    icon: <CheckCircle2 size={20} strokeWidth={2.5} />,
     title: 'Node Coffee: koneksi stabil, pesanan cepat, meja siap kerja.',
     desc: 'Self-ordering ringkas, stop kontak di tiap meja, dan suasana yang mendukung fokus.',
   },
@@ -82,14 +81,13 @@ export default function LeadSection() {
         <div className="pas-grid reveal">
           {pasItems.map((item) => (
             <div className={`pas ${item.type}`} key={item.type}>
-              <span className="pas-icon"><item.Icon size={18} /></span>
+              <span className="pas-icon">{item.icon}</span>
               <span className="lb">{item.label}</span>
               <h4>{item.title}</h4>
               <p>{item.desc}</p>
             </div>
           ))}
         </div>
-
 
         {/* ── Lead + Location Grid ── */}
         <div className="lead-grid reveal">
