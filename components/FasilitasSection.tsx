@@ -1,8 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { Wifi, Timer, Plug, CreditCard, TrendingUp, ShieldCheck, Users, Star, MapPin } from 'lucide-react'
+import { Wifi, Timer, Plug, CreditCard, Star, Users, ShieldCheck, TrendingUp, MapPin } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { Reveal } from '@/components/ui/Reveal'
+import { SectionHeader } from '@/components/ui/SectionHeader'
 
 type Feature = {
   Icon: LucideIcon
@@ -10,8 +12,7 @@ type Feature = {
   desc: string
   num: string
   unit: string
-  vs: string
-  delay: string
+  span?: string
 }
 
 const features: Feature[] = [
@@ -21,8 +22,7 @@ const features: Feature[] = [
     desc: 'Koneksi 1 Gbps stabil — video call, upload, dan streaming tanpa gangguan.',
     num: '1',
     unit: 'Gbps',
-    vs: 'Kafe biasa: 10–50 Mbps',
-    delay: '0ms',
+    span: 'sm:col-span-2',
   },
   {
     Icon: Timer,
@@ -30,8 +30,6 @@ const features: Feature[] = [
     desc: 'Pesan via kiosk atau HP — pesanan langsung ke dapur tanpa antre kasir.',
     num: '4',
     unit: 'menit',
-    vs: 'Kafe biasa: 10–15 menit',
-    delay: '80ms',
   },
   {
     Icon: Plug,
@@ -39,8 +37,6 @@ const features: Feature[] = [
     desc: 'Stop kontak + USB-C di setiap meja. Kursi ergonomis, meja lebar 80 cm.',
     num: '100',
     unit: '%',
-    vs: 'Kafe biasa: terbatas',
-    delay: '160ms',
   },
   {
     Icon: CreditCard,
@@ -48,89 +44,77 @@ const features: Feature[] = [
     desc: 'QRIS, GoPay, OVO, ShopeePay, dan semua kartu debit/kredit.',
     num: 'QRIS',
     unit: '',
-    vs: 'Tanpa uang tunai',
-    delay: '240ms',
+    span: 'sm:col-span-2',
   },
 ]
 
 const miniStats = [
-  { Icon: Star,        val: '4.9/5',   label: 'Google Rating' },
-  { Icon: Users,       val: '1.200+',  label: 'Member aktif' },
-  { Icon: ShieldCheck, val: '24/7',    label: 'Support tersedia' },
-  { Icon: TrendingUp,  val: '97%',     label: 'Pesanan < 4 menit' },
+  { Icon: Star, val: '4.9/5', label: 'Google Rating' },
+  { Icon: Users, val: '1.200+', label: 'Member aktif' },
+  { Icon: ShieldCheck, val: '24/7', label: 'Support tersedia' },
+  { Icon: TrendingUp, val: '97%', label: 'Pesanan < 4 menit' },
 ]
 
 export default function FasilitasSection() {
   return (
-    <section className="sec" id="fasilitas" aria-label="Fasilitas Node Coffee">
-      <div className="container">
+    <section className="py-20 lg:py-28" id="fasilitas" aria-label="Fasilitas Node Coffee">
+      <div className="mx-auto max-w-6xl px-5 lg:px-8">
+        <Reveal>
+          <SectionHeader
+            tag="Fasilitas"
+            title={<>Didesain untuk produktivitas, <span className="text-brand">bukan sekadar tempat duduk.</span></>}
+            subtitle="Setiap detail dipilih agar kamu bisa datang, fokus, dan pulang dengan hasil kerja nyata."
+          />
+        </Reveal>
 
-        {/* ── Section header (centered) ── */}
-        <div className="fas-header reveal">
-          <div className="tag">Fasilitas Unggulan</div>
-          <h2 className="stl">
-            Didesain untuk produktivitas.<br />
-            <em>Bukan sekadar tempat duduk.</em>
-          </h2>
-          <p className="sdsc fas-sdsc">
-            Setiap detail di Node Coffee dipilih agar kamu bisa datang, fokus, dan pulang
-            dengan hasil kerja nyata.
-          </p>
-        </div>
-
-        {/* ── 2-column: image left, cards right ── */}
-        <div className="fasilitas-inner">
-
-          {/* Kiri — Gambar + mini stats */}
-          <div className="reveal fas-image-col">
-            <div className="fas-image-wrap">
+        <div className="grid gap-5 lg:grid-cols-12 lg:gap-5">
+          <Reveal className="lg:col-span-5" delay={0.05}>
+            <div className="card-shine relative h-full min-h-[280px] overflow-hidden rounded-3xl border border-slate-200 lg:min-h-[420px]">
               <Image
                 src="/img/hero/hero 1.webp"
                 alt="Suasana interior Node Coffee — coworking space Yogyakarta"
                 fill
-                sizes="(max-width: 991px) 100vw, 42vw"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover"
                 priority
               />
-              {/* Overlay label */}
-              <div className="fas-image-badge">
-                <MapPin size={12} style={{ display: 'inline', marginTop: '-2px' }} /> Node Coffee, Yogyakarta
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 flex items-center gap-2 rounded-xl border border-white/20 bg-white/90 px-3.5 py-2 text-xs font-medium text-navy backdrop-blur-md">
+                <MapPin size={13} className="text-brand" />
+                Node Coffee, Yogyakarta
               </div>
             </div>
 
-            {/* Mini stats strip */}
-            <div className="fas-stats">
+            <div className="mt-4 grid grid-cols-4 gap-2">
               {miniStats.map(({ Icon, val, label }) => (
-                <div className="fas-stat" key={label}>
-                  <Icon size={13} className="fas-stat-icon" />
-                  <div className="fas-stat-val">{val}</div>
-                  <div className="fas-stat-label">{label}</div>
+                <div
+                  key={label}
+                  className="card-shine rounded-2xl border border-slate-200 bg-white px-2 py-4 text-center"
+                >
+                  <Icon size={14} className="mx-auto mb-1.5 text-brand" />
+                  <div className="font-display text-xs font-bold text-navy">{val}</div>
+                  <div className="mt-0.5 text-[9px] leading-tight text-slate-500">{label}</div>
                 </div>
               ))}
             </div>
-          </div>
+          </Reveal>
 
-          {/* Kanan — Feature Cards */}
-          <div className="fas-cards reveal">
-            <div className="feat-grid">
-              {features.map(({ Icon, title, desc, num, unit, vs, delay }) => (
-                <div className="feat" key={title} style={{ animationDelay: delay }}>
-                  <div className="feat-icon-wrap">
-                    <Icon size={22} />
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {features.map(({ Icon, title, desc, num, unit, span }, i) => (
+              <Reveal key={title} delay={0.1 + i * 0.06} className={span}>
+                <div className="card-shine h-full rounded-2xl border border-slate-200 bg-white p-6">
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-brand-light to-white text-brand shadow-sm">
+                    <Icon size={20} />
                   </div>
-                  <h4>{title}</h4>
-                  <p>{desc}</p>
-                  <div className="feat-num-row">
-                    <span className="num">{num}</span>
-                    {unit && <span className="feat-unit">{unit}</span>}
-                  </div>
-                  <div className="vs">
-                    <TrendingUp size={9} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
-                    {vs}
+                  <h4 className="font-display text-base font-semibold text-navy">{title}</h4>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{desc}</p>
+                  <div className="mt-4 flex items-baseline gap-1 border-t border-slate-100 pt-4">
+                    <span className="font-display text-2xl font-bold text-brand">{num}</span>
+                    {unit && <span className="text-sm font-semibold text-brand/60">{unit}</span>}
                   </div>
                 </div>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>
