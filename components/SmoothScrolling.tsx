@@ -1,26 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Lenis from 'lenis'
 
 export function SmoothScrolling({ children }: { children: React.ReactNode }) {
-  const [isMobile, setIsMobile] = useState(false)
-
   useEffect(() => {
-    // Check if mobile device
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  useEffect(() => {
-    // Disable Lenis entirely on mobile to save TBT/CPU
-    if (isMobile) return
+    // Synchronously check on mount to prevent any TBT leak on mobile
+    if (window.innerWidth < 768) return
 
     const lenis = new Lenis({
       duration: 1.2, 
@@ -42,7 +28,7 @@ export function SmoothScrolling({ children }: { children: React.ReactNode }) {
     return () => {
       lenis.destroy()
     }
-  }, [isMobile])
+  }, [])
 
   return <>{children}</>
 }

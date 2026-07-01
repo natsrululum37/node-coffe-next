@@ -100,17 +100,18 @@ export default function HeroSection() {
 
       {/* Marquee Banner - Blue & White */}
       <div className="absolute bottom-0 left-0 w-full border-t-4 border-slate-900 dark:border-white bg-blue-600 overflow-hidden z-30 flex items-center py-2">
-        <motion.div 
-          animate={{ x: [0, -1000] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
-          className="flex whitespace-nowrap font-black uppercase text-lg tracking-widest text-white"
-        >
+        <div className="flex whitespace-nowrap font-black uppercase text-lg tracking-widest text-white animate-marquee w-max">
           <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
           <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
           <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
           <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
           <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
-        </motion.div>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+        </div>
       </div>
     </section>
   )
