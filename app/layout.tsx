@@ -1,46 +1,27 @@
 import type { Metadata } from 'next'
-import { Inter, Manrope, DM_Sans } from 'next/font/google'
+import { Libre_Bodoni, Public_Sans } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { SmoothScrolling } from '@/components/SmoothScrolling'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
-const inter = Inter({
+const publicSans = Public_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
 })
-const manrope = Manrope({
+
+const libreBodoni = Libre_Bodoni({
   subsets: ['latin'],
-  variable: '--font-manrope',
+  variable: '--font-serif',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
-})
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-dm-sans',
-  display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
 })
 
 export const metadata: Metadata = {
   title: 'Node Coffee — Kafe Produktif & Coworking Space di Yogyakarta',
-  description:
-    'Node Coffee adalah kafe coworking di Yogyakarta dengan Wi-Fi 6 1 Gbps, self-ordering kiosk, dan kopi single origin. Tempat terbaik untuk mahasiswa, freelancer, dan pekerja kreatif.',
-  keywords: [
-    'kafe yogyakarta', 'coworking yogyakarta', 'kafe wifi cepat', 'node coffee',
-    'self ordering kiosk', 'kafe mahasiswa yogyakarta', 'kopi single origin',
-  ],
-  authors: [{ name: 'Node Coffee' }],
-  openGraph: {
-    title: 'Node Coffee — Kafe Produktif & Coworking Space di Yogyakarta',
-    description: 'Wi-Fi 6 1 Gbps, self-ordering kiosk, kopi single origin. Tempat kerja dan ngopi terbaik di Yogyakarta.',
-    type: 'website',
-    locale: 'id_ID',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Node Coffee — Kafe Produktif & Coworking Space di Yogyakarta',
-    description: 'Wi-Fi 6 1 Gbps, self-ordering kiosk, kopi single origin. Tempat kerja dan ngopi terbaik di Yogyakarta.',
-  },
+  description: 'Node Coffee adalah kafe coworking di Yogyakarta dengan Wi-Fi 6 1 Gbps, self-ordering kiosk, dan kopi single origin.',
 }
 
 export default function RootLayout({
@@ -49,9 +30,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="id" className={`${inter.variable} ${manrope.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+    <html lang="id" suppressHydrationWarning className={`${publicSans.variable} ${libreBodoni.variable} scroll-smooth antialiased`}>
+      <body className="min-h-screen font-sans flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 selection:bg-blue-600 selection:text-white transition-colors duration-300">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SmoothScrolling>
+            {children}
+          </SmoothScrolling>
+        </ThemeProvider>
+      </body>
+      <GoogleAnalytics gaId="G-G4THENRTMY" />
     </html>
   )
 }
-

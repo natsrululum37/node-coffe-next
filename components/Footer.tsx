@@ -1,121 +1,35 @@
 'use client'
 
 import Image from 'next/image'
-import {
-  Camera, MessageCircle, MapPin, Coffee,
-  Wifi, Clock, ArrowUpRight
-} from 'lucide-react'
-
-const navLinks = [
-  { href: '#menu',      label: 'Menu' },
-  { href: '#fasilitas', label: 'Fasilitas' },
-  { href: '#lokasi',    label: 'Lokasi' },
-  { href: '#promo',     label: 'Promo' },
-]
-
-const socials = [
-  { href: 'https://instagram.com',        icon: Camera,         label: 'Instagram' },
-  { href: 'https://wa.me/6283143957624',  icon: MessageCircle,  label: 'WhatsApp' },
-  { href: '#lokasi',                       icon: MapPin,         label: 'Maps', scroll: true },
-]
-
-const infoRows = [
-  { Icon: MapPin,  text: 'Jl. Ring Road Utara, Condongcatur, Sleman, Yogyakarta 55283' },
-  { Icon: Clock,   text: 'Setiap hari, 07.00 – 23.00 WIB' },
-  { Icon: Wifi,    text: 'Wi-Fi 6 · 1 Gbps dedicated' },
-  { Icon: Coffee,  text: 'Menu mulai Rp 15.000' },
-]
-
-const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-  e.preventDefault()
-  document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
+import { motion } from 'framer-motion'
 
 export default function Footer() {
   return (
-    <footer className="footer" aria-label="Footer Node Coffee">
-      <div className="container">
-
-        {/* ── Main grid ── */}
-        <div className="footer-grid">
-
-          {/* Brand */}
-          <div className="footer-brand-col">
-            <div className="footer-logo">
-              <Image
-                src="/img/logo/logo.webp"
-                alt="Node Coffee Logo"
-                width={24}
-                height={24}
-                style={{ objectFit: 'contain' }}
-              />
-              <span>Node Coffee</span>
-            </div>
-            <p className="footer-tagline">
-              Specialty coffee &amp; coworking space untuk mahasiswa
-              dan freelancer di Yogyakarta.
-            </p>
-            <div className="footer-socials">
-              {socials.map(({ href, icon: Icon, label, scroll }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="footer-social-btn"
-                  aria-label={label}
-                  {...(scroll
-                    ? { onClick: (e: React.MouseEvent<HTMLAnchorElement>) => handleScroll(e, href) }
-                    : { target: '_blank', rel: 'noopener noreferrer' }
-                  )}
-                >
-                  <Icon size={14} />
-                </a>
-              ))}
-            </div>
+    <footer className="bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-t-4 border-slate-900 dark:border-white transition-colors duration-500">
+      <div className="border-b-2 border-slate-900 dark:border-slate-800">
+        <div className="max-w-[80rem] mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-4">
+            <motion.div 
+              className="relative h-16 w-16"
+              whileHover={{ rotate: 180, scale: 1.1 }}
+              transition={{ duration: 0.5, ease: "backOut" }}
+            >
+              <Image src="/logo/logo.webp" alt="Node Coffee Logo" fill sizes="64px" className="object-contain" />
+            </motion.div>
+            <h2 className="font-sans font-black text-5xl md:text-7xl tracking-tighter uppercase leading-none text-slate-900 dark:text-white">
+              NODE<span className="text-blue-600">COFFEE.</span>
+            </h2>
           </div>
-
-          {/* Navigation */}
-          <div className="footer-nav-col">
-            <div className="footer-col-title">Navigasi</div>
-            <nav>
-              {navLinks.map(({ href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="footer-nav-link"
-                  onClick={(e) => handleScroll(e, href)}
-                >
-                  {label}
-                  <ArrowUpRight size={11} />
-                </a>
-              ))}
-            </nav>
+          
+          <div className="flex gap-4">
+            <a href="#" className="bg-blue-600 text-white px-5 py-2 font-bold uppercase tracking-widest border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#0f172a] dark:shadow-[4px_4px_0_0_#ffffff] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">Instagram</a>
+            <a href="#" className="bg-blue-600 text-white px-5 py-2 font-bold uppercase tracking-widest border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#0f172a] dark:shadow-[4px_4px_0_0_#ffffff] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">Twitter</a>
           </div>
-
-          {/* Info */}
-          <div className="footer-info-col">
-            <div className="footer-col-title">Informasi</div>
-            {infoRows.map(({ Icon, text }) => (
-              <div className="footer-info-row" key={text}>
-                <Icon size={13} className="footer-info-icon" />
-                <span>{text}</span>
-              </div>
-            ))}
-          </div>
-
         </div>
-
-        {/* ── Divider ── */}
-        <div className="footer-divider" />
-
-        {/* ── Bottom bar ── */}
-        <div className="footer-bottom">
-          <span>© 2026 Node Coffee · All rights reserved</span>
-          <span className="footer-bottom-right">
-            <Coffee size={11} />
-            Made in Yogyakarta
-          </span>
-        </div>
-
+      </div>
+      <div className="max-w-[80rem] mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400">
+        <p>&copy; 2026 NODE COFFEE. TUGAS KULIAH BISNIS DIGITAL.</p>
+        <p className="mt-2 md:mt-0">DIBUAT DENGAN NEXT.JS & TAILWIND.</p>
       </div>
     </footer>
   )

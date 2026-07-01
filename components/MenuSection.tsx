@@ -1,109 +1,105 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
-import { Info, ChevronLeft, ChevronRight } from 'lucide-react'
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
 
-const PRODUCT_IMAGES = [
-  { src: '/img/product/americano.webp', alt: 'Americano Node Coffee', caption: 'Americano — Hot / Iced' },
-  { src: '/img/product/Latte-Caffe.webp', alt: 'Café Latte Node Coffee', caption: 'Café Latte — Susu segar lokal' },
-  { src: '/img/product/aren-latte.webp', alt: 'Aren Latte Node Coffee', caption: 'Aren Latte — Gula aren asli' },
-  { src: '/img/product/paket-kerja.webp', alt: 'Paket Kerja Node Coffee', caption: 'Paket Kerja — Kopi + Croissant' },
+const MENU_COL_1 = [
+  { name: 'Node Aren Latte', desc: 'Espresso blend house spesial dengan gula aren organik', price: '28K', img: 'https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?auto=format&fit=crop&q=80&w=800' },
+  { name: 'Kyoto Matcha', desc: 'Ceremonial grade matcha dengan creamy oat milk', price: '32K', img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&q=80&w=800' },
+]
+
+const MENU_COL_2 = [
+  { name: 'V60 Manual Brew', desc: 'Biji kopi single origin pilihan roaster', price: '30K', img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=800' },
+  { name: 'Artisan Pastry', desc: 'Croissant mentega renyah panggang segar', price: '25K', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=800' },
 ]
 
 export default function MenuSection() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
-  ])
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
 
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
+  const yCol1 = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"])
+  const yCol2 = useTransform(scrollYProgress, [0, 1], ["0%", "10%"])
 
   return (
-    <section className="sec sec-warm" id="menu" aria-label="Menu Node Coffee">
-      <div className="container">
-        <div className="menu-section-inner">
-
-          {/* ── KIRI: Tentang Node Coffee ── */}
-          <div className="menu-left-col reveal">
-            <div className="tag">Tentang Node Coffee</div>
-            <h2 className="stl">
-              Kopi Nusantara<br />
-              Disangrai Mingguan
+    <section className="py-32 bg-white dark:bg-slate-950 transition-colors duration-500 relative border-b-4 border-slate-900 dark:border-white" id="menu" ref={containerRef}>
+      
+      <div className="max-w-[80rem] mx-auto px-6 relative z-10">
+        
+        {/* Editorial Header */}
+        <div className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b-2 border-slate-900 dark:border-white pb-6 overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "backOut" }}
+            className="max-w-3xl"
+          >
+            <h2 className="font-sans font-black text-5xl md:text-7xl lg:text-8xl text-slate-900 dark:text-white tracking-tighter leading-none uppercase mb-4">
+              Kopi Nusantara <br />
+              <span className="font-serif italic text-blue-600 text-4xl md:text-6xl">Disangrai Mingguan.</span>
             </h2>
-            <p className="sdsc">
-              Biji kopi single origin dari Gayo, Toraja, dan Flores. Disangrai rutin
-              agar rasa tetap konsisten, segar, dan mudah dinikmati setiap hari.
-            </p>
-            <div className="menu-brand-wrap">
-              <div className="menu-brand-image">
-                <Image
-                  src="/img/product/biji-kopi.webp"
-                  alt="Biji kopi segar Node Coffee"
-                  fill
-                  sizes="(max-width: 991px) 100vw, 40vw"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
-              <p className="menu-brand-caption">Single origin — disangrai mingguan</p>
-            </div>
-          </div>
+          </motion.div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: false, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "backOut", delay: 0.1 }}
+            className="max-w-xs p-4 bg-blue-600 text-white font-bold border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#0f172a] dark:shadow-[4px_4px_0_0_#ffffff]"
+          >
+            Kualitas biji kopi lokal premium yang selalu fresh. Dari Americano yang strong untuk melek seharian, sampai Cafe Latte yang creamy untuk menemani sesi santaimu.
+          </motion.div>
+        </div>
 
-          {/* ── KANAN: Menu Unggulan (Carousel) ── */}
-          <div className="menu-right-col reveal">
-            <div className="menu-header">
-              <div className="tag" style={{ marginBottom: 0 }}>Menu Unggulan</div>
-              <div className="menu-update">Harga dine-in · update 2026</div>
-            </div>
+        {/* Cafe Brutalist Grid */}
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+          <motion.div style={{ y: yCol1 }} className="flex flex-col gap-8 pt-8 md:pt-0">
+            {MENU_COL_1.map((item, idx) => (
+              <MenuCard key={idx} item={item} idx={idx} />
+            ))}
+          </motion.div>
 
-            <div className="menu-carousel-wrap">
-              <div className="menu-embla" ref={emblaRef}>
-                <div className="menu-embla__container">
-                  {PRODUCT_IMAGES.map((item) => (
-                    <div className="menu-embla-slide" key={item.src}>
-                      <Image
-                        src={item.src}
-                        alt={item.alt}
-                        fill
-                        sizes="(max-width: 991px) 100vw, 50vw"
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <div className="menu-carousel-caption-overlay">
-                        {item.caption}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                type="button"
-                className="menu-nav-btn menu-nav-btn--prev"
-                onClick={scrollPrev}
-                aria-label="Menu sebelumnya"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                type="button"
-                className="menu-nav-btn menu-nav-btn--next"
-                onClick={scrollNext}
-                aria-label="Menu berikutnya"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            <p className="menu-note" style={{ marginTop: '16px' }}>
-              <Info size={11} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
-              Menu lengkap tersedia di kiosk pemesanan mandiri
-            </p>
-          </div>
-
+          <motion.div style={{ y: yCol2 }} className="flex flex-col gap-8 md:mt-24">
+            {MENU_COL_2.map((item, idx) => (
+              <MenuCard key={idx} item={item} idx={idx} />
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
+  )
+}
+
+function MenuCard({ item, idx }: { item: any, idx: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 80, rotate: idx % 2 === 0 ? -3 : 3 }}
+      whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+      viewport={{ once: false, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: "backOut", delay: idx * 0.1 }}
+            className="group bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-[8px_8px_0_0_#0f172a] dark:shadow-[8px_8px_0_0_#ffffff] hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-[2px_2px_0_0_#0f172a] dark:hover:shadow-[2px_2px_0_0_#ffffff] transition-all duration-300 overflow-hidden"
+    >
+      <div className="relative aspect-[4/3] border-b-2 border-slate-900 dark:border-white overflow-hidden group-hover:[&>img]:scale-105">
+        <Image 
+          src={item.img} 
+          alt={item.name} 
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover filter contrast-125 transition-transform duration-700 ease-out"
+        />
+        <div className="absolute top-4 right-4 bg-white text-slate-900 font-black text-lg px-3 py-1 border-2 border-slate-900 shadow-[4px_4px_0_0_#0f172a]">
+          {item.price}
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <h3 className="font-sans font-black text-2xl text-slate-900 dark:text-white tracking-tighter mb-2">{item.name}</h3>
+        <p className="text-slate-700 dark:text-slate-300 font-medium leading-snug">{item.desc}</p>
+      </div>
+    </motion.div>
   )
 }

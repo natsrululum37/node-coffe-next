@@ -1,120 +1,36 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowRight, MapPin, Gift, Check, AlertTriangle, SendHorizonal, ShieldCheck } from 'lucide-react'
-
-const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-  e.preventDefault()
-  document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
-
-type FormStatus = 'idle' | 'success' | 'error'
+import { motion } from 'framer-motion'
 
 export default function CtaSection() {
-  const [email, setEmail]   = useState('')
-  const [status, setStatus] = useState<FormStatus>('idle')
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email.trim() || !email.includes('@')) {
-      setStatus('error')
-      setTimeout(() => setStatus('idle'), 2500)
-      return
-    }
-    setStatus('success')
-    setEmail('')
-    setTimeout(() => setStatus('idle'), 4000)
-  }
-
   return (
-    <section className="cta-sec" id="promo" aria-label="Klaim Voucher — CTA">
-      {/* Decorative glow blobs */}
-      <div className="cta-blob cta-blob--l" aria-hidden="true" />
-      <div className="cta-blob cta-blob--r" aria-hidden="true" />
-
-      <div className="container">
-        <div className="cta-inner reveal">
-
-          {/* Left — Copy */}
-          <div className="cta-copy">
-            <div className="tag" style={{ color: 'var(--blue-l)' }}>Penawaran Eksklusif</div>
-            <h2 className="cta-h">
-              Kopi gratis<br />
-              untuk kunjungan<br />
-              <em>pertamamu.</em>
-            </h2>
-            <p className="cta-sub">
-              Daftarkan email dan klaim voucher Rp&nbsp;22.000 — berlaku untuk semua
-              menu kopi panas &amp; dingin. Tidak perlu kode promo.
-            </p>
-            <a
-              href="#lokasi"
-              className="cta-loc-link"
-              onClick={(e) => handleScroll(e, '#lokasi')}
-            >
-              <MapPin size={13} /> Jl. Ring Road Utara, Condongcatur, Yogyakarta
-            </a>
-          </div>
-
-          {/* Right — Inline form */}
-          <div className="cta-form-wrap">
-            <div className="cta-form-card">
-              {/* Badge */}
-              <div className="cta-gift-badge">
-                <Gift size={16} />
-                <span>Voucher senilai <strong>Rp 22.000</strong></span>
-              </div>
-
-              <h3 className="cta-form-title">Klaim Sekarang</h3>
-              <p className="cta-form-sub">Voucher otomatis dikirim ke email Anda.</p>
-
-              <form onSubmit={handleSubmit} noValidate className="cta-form">
-                <input
-                  type="email"
-                  className={`fi${status === 'error' ? ' fi-error' : ''}`}
-                  placeholder="nama@email.com"
-                  aria-label="Email untuk klaim voucher"
-                  id="cta-email-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={status === 'success'}
-                />
-                <button
-                  type="submit"
-                  className="fb"
-                  id="cta-submit-btn"
-                  disabled={status === 'success'}
-                  style={
-                    status === 'success' ? { background: 'linear-gradient(135deg,#10B981,#059669)' }
-                    : status === 'error'  ? { background: 'linear-gradient(135deg,#EF4444,#DC2626)' }
-                    : {}
-                  }
-                >
-                  {status === 'success' ? <><Check size={15} /> Terkirim!</>
-                   : status === 'error'  ? <><AlertTriangle size={15} /> Email tidak valid</>
-                   : <><SendHorizonal size={15} /> Kirim Voucher</>}
-                </button>
-              </form>
-
-              <p className="fn" style={{ marginTop: 10 }}>
-                <ShieldCheck size={11} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
-                Email tidak dibagikan. Berhenti kapan saja.
-              </p>
-
-              <div className="cta-or">atau</div>
-
-              <a
-                href="#menu"
-                className="cta-o cta-o--dark"
-                onClick={(e) => handleScroll(e, '#menu')}
-                id="cta-menu-link"
-              >
-                <ArrowRight size={14} /> Lihat Menu &amp; Harga
-              </a>
-            </div>
-          </div>
-
-        </div>
+    <section className="bg-blue-600 border-b-4 border-slate-900 dark:border-white transition-colors duration-500">
+      <div className="grid lg:grid-cols-2">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "backOut" }}
+          className="p-12 lg:p-20 border-b-4 lg:border-b-0 lg:border-r-4 border-slate-900 dark:border-white flex flex-col justify-center items-start"
+        >
+          <h2 className="font-sans font-black text-6xl md:text-8xl tracking-tighter text-white uppercase leading-[0.8] mb-6">
+            Siap <br />
+            <span className="font-serif italic text-slate-900">Fokus?</span>
+          </h2>
+          <p className="text-xl font-bold text-white mb-10 max-w-sm">
+            Tinggalkan zona lambat. Buka laptop Anda, dan mulai hari yang produktif.
+          </p>
+          <a href="#lokasi" className="inline-block bg-white text-slate-900 font-black text-xl uppercase px-8 py-4 border-2 border-slate-900 shadow-[6px_6px_0_0_#1c1917] dark:shadow-[6px_6px_0_0_#ffffff] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0_0_#1c1917] transition-all">
+            Kunjungi Lokasi
+          </a>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "backOut" }}
+          className="h-[40vh] lg:h-auto bg-[url('https://images.unsplash.com/photo-1495474472205-d62fbc6b377b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center filter contrast-125"
+        ></motion.div>
       </div>
     </section>
   )

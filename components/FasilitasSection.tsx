@@ -1,137 +1,60 @@
 'use client'
 
-import Image from 'next/image'
-import { Wifi, Timer, Plug, CreditCard, TrendingUp, ShieldCheck, Users, Star, MapPin } from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
-type Feature = {
-  Icon: LucideIcon
-  title: string
-  desc: string
-  num: string
-  unit: string
-  vs: string
-  delay: string
-}
-
-const features: Feature[] = [
-  {
-    Icon: Wifi,
-    title: 'Wi-Fi 6 Dedicated',
-    desc: 'Koneksi 1 Gbps stabil — video call, upload, dan streaming tanpa gangguan.',
-    num: '1',
-    unit: 'Gbps',
-    vs: 'Kafe biasa: 10–50 Mbps',
-    delay: '0ms',
-  },
-  {
-    Icon: Timer,
-    title: 'Self-Ordering Cepat',
-    desc: 'Pesan via kiosk atau HP — pesanan langsung ke dapur tanpa antre kasir.',
-    num: '4',
-    unit: 'menit',
-    vs: 'Kafe biasa: 10–15 menit',
-    delay: '80ms',
-  },
-  {
-    Icon: Plug,
-    title: 'Meja Berdaya',
-    desc: 'Stop kontak + USB-C di setiap meja. Kursi ergonomis, meja lebar 80 cm.',
-    num: '100',
-    unit: '%',
-    vs: 'Kafe biasa: terbatas',
-    delay: '160ms',
-  },
-  {
-    Icon: CreditCard,
-    title: '100% Cashless',
-    desc: 'QRIS, GoPay, OVO, ShopeePay, dan semua kartu debit/kredit.',
-    num: 'QRIS',
-    unit: '',
-    vs: 'Tanpa uang tunai',
-    delay: '240ms',
-  },
-]
-
-const miniStats = [
-  { Icon: Star,        val: '4.9/5',   label: 'Google Rating' },
-  { Icon: Users,       val: '1.200+',  label: 'Member aktif' },
-  { Icon: ShieldCheck, val: '24/7',    label: 'Support tersedia' },
-  { Icon: TrendingUp,  val: '97%',     label: 'Pesanan < 4 menit' },
+const FACILITIES = [
+  { num: '01', title: 'Kecepatan 1 Gbps', desc: 'Jaringan internet berstandar tinggi yang stabil. Sesi meeting online, render video, atau unduh aset tugas lancar tanpa buffering.' },
+  { num: '02', title: 'Kopi Siap < 4 Menit', desc: 'Pesan langsung dari layar interaktif. Hemat waktu tanpa perlu berdiri lama di kasir, pesanan otomatis masuk ke antrean barista.' },
+  { num: '03', title: 'Bayar Pakai QRIS', desc: 'Transaksi mulus, higienis, dan instan. Tinggal scan pakai e-wallet atau m-banking favoritmu.' },
+  { num: '04', title: 'Stopkontak di Tiap Meja', desc: 'Tata letak ergonomis yang dirancang khusus untuk kenyamanan bekerja berjam-jam tanpa takut kehabisan baterai laptop.' }
 ]
 
 export default function FasilitasSection() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  const xLeft = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"])
+  const xRight = useTransform(scrollYProgress, [0, 1], ["0%", "10%"])
+
   return (
-    <section className="sec" id="fasilitas" aria-label="Fasilitas Node Coffee">
-      <div className="container">
-
-        {/* ── Section header (centered) ── */}
-        <div className="fas-header reveal">
-          <div className="tag">Fasilitas Unggulan</div>
-          <h2 className="stl">
-            Didesain untuk produktivitas.<br />
-            <em>Bukan sekadar tempat duduk.</em>
+    <section className="py-32 bg-white dark:bg-slate-950 border-b-4 border-slate-900 dark:border-white overflow-hidden" id="fasilitas" ref={containerRef}>
+      
+      {/* Kinetic Typography Header */}
+      <div className="flex flex-col gap-2 mb-20 opacity-90">
+        <motion.div style={{ x: xLeft }} className="whitespace-nowrap">
+          <h2 className="font-black text-[12vw] leading-none tracking-tighter text-slate-900 dark:text-white">
+            FASILITAS • FASILITAS • 
           </h2>
-          <p className="sdsc fas-sdsc">
-            Setiap detail di Node Coffee dipilih agar kamu bisa datang, fokus, dan pulang
-            dengan hasil kerja nyata.
-          </p>
-        </div>
+        </motion.div>
+        <motion.div style={{ x: xRight }} className="whitespace-nowrap">
+          <h2 className="font-black text-[12vw] leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: '3px #2563eb' }}>
+            PREMIUM • PREMIUM • 
+          </h2>
+        </motion.div>
+      </div>
 
-        {/* ── 2-column: image left, cards right ── */}
-        <div className="fasilitas-inner">
-
-          {/* Kiri — Gambar + mini stats */}
-          <div className="reveal fas-image-col">
-            <div className="fas-image-wrap">
-              <Image
-                src="/img/hero/hero 1.webp"
-                alt="Suasana interior Node Coffee — coworking space Yogyakarta"
-                fill
-                sizes="(max-width: 991px) 100vw, 42vw"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-                priority
-              />
-              {/* Overlay label */}
-              <div className="fas-image-badge">
-                <MapPin size={12} style={{ display: 'inline', marginTop: '-2px' }} /> Node Coffee, Yogyakarta
+      <div className="max-w-[80rem] mx-auto px-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {FACILITIES.map((fac, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: "backOut", delay: idx * 0.1 }}
+              className="bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-[6px_6px_0_0_#0f172a] dark:shadow-[6px_6px_0_0_#ffffff] p-6 hover:shadow-[8px_8px_0_0_#2563eb] dark:hover:shadow-[8px_8px_0_0_#2563eb] transition-all cursor-default"
+            >
+              <div className="font-sans font-black text-5xl text-blue-600 mb-4 tracking-tighter">
+                {fac.num}
               </div>
-            </div>
-
-            {/* Mini stats strip */}
-            <div className="fas-stats">
-              {miniStats.map(({ Icon, val, label }) => (
-                <div className="fas-stat" key={label}>
-                  <Icon size={13} className="fas-stat-icon" />
-                  <div className="fas-stat-val">{val}</div>
-                  <div className="fas-stat-label">{label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Kanan — Feature Cards */}
-          <div className="fas-cards reveal">
-            <div className="feat-grid">
-              {features.map(({ Icon, title, desc, num, unit, vs, delay }) => (
-                <div className="feat" key={title} style={{ animationDelay: delay }}>
-                  <div className="feat-icon-wrap">
-                    <Icon size={22} />
-                  </div>
-                  <h4>{title}</h4>
-                  <p>{desc}</p>
-                  <div className="feat-num-row">
-                    <span className="num">{num}</span>
-                    {unit && <span className="feat-unit">{unit}</span>}
-                  </div>
-                  <div className="vs">
-                    <TrendingUp size={9} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
-                    {vs}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+              <h3 className="font-black text-xl mb-3 tracking-tight text-slate-900 dark:text-white">{fac.title}</h3>
+              <p className="text-slate-700 dark:text-slate-300 font-medium leading-relaxed text-sm">{fac.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

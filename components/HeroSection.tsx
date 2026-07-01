@@ -1,169 +1,136 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
-import { Tag, MapPin, Clock, ArrowRight, ChevronLeft, ChevronRight, Star } from 'lucide-react'
-import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
-
-const HERO_IMAGES = [
-  { src: '/img/hero/hero 1.webp', alt: 'Node Coffee — Interior nyaman untuk kerja' },
-  { src: '/img/hero/hero 2.webp', alt: 'Node Coffee — Suasana coworking space' },
-  { src: '/img/hero/hero 3.webp', alt: 'Node Coffee — Kopi dan produktivitas' },
-]
-
-const SLIDE_DELAY = 5500
 
 export default function HeroSection() {
-  const autoplayRef = useRef(Autoplay({ delay: SLIDE_DELAY, stopOnInteraction: false, stopOnMouseEnter: true }))
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  })
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, duration: 50 },
-    [autoplayRef.current]
-  )
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [progress, setProgress] = useState(0)
-
-  /* Sinkronisasi index aktif */
-  useEffect(() => {
-    if (!emblaApi) return
-    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap())
-    emblaApi.on('select', onSelect)
-    onSelect()
-    return () => { emblaApi.off('select', onSelect) }
-  }, [emblaApi])
-
-  /* Progress bar animasi per slide */
-  useEffect(() => {
-    setProgress(0)
-    const start = performance.now()
-    let raf: number
-
-    const tick = (now: number) => {
-      const pct = Math.min(((now - start) / SLIDE_DELAY) * 100, 100)
-      setProgress(pct)
-      if (pct < 100) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [selectedIndex])
-
-  /* Reveal observer */
-  useEffect(() => {
-    const reveals = document.querySelectorAll('.reveal')
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target) }
-      }),
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
-    )
-    reveals.forEach((el) => observer.observe(el))
-    return () => observer.disconnect()
-  }, [])
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
-
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault()
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
+  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
+  const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "40%"])
 
   return (
-    <section className="hero" aria-label="Hero — Node Coffee">
-      {/* ── Background Carousel ── */}
-      <div className="hero-carousel-container">
-        <div className="embla hero-embla" ref={emblaRef}>
-          <div className="embla__container">
-            {HERO_IMAGES.map((image, index) => (
-              <div
-                key={image.src}
-                className={`embla__slide${index === selectedIndex ? ' is-active' : ''}`}
-              >
-                <div className="hero-bg">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    priority={index === 0}
-                    sizes="100vw"
-                    className="hero-bg-image"
-                  />
-                </div>
-              </div>
-            ))}
+    <section ref={containerRef} className="relative min-h-[100svh] pt-32 pb-24 w-full overflow-hidden bg-white dark:bg-slate-950 flex flex-col justify-center transition-colors duration-500 border-b-4 border-slate-900 dark:border-white" id="home">
+      
+      {/* Editorial Image Block */}
+      <motion.div 
+        className="absolute right-0 lg:right-16 top-1/2 -translate-y-1/2 w-full lg:w-1/2 h-[60vh] z-0 overflow-hidden border-4 border-slate-900 dark:border-white shadow-[8px_8px_0_0_#0f172a] dark:shadow-[8px_8px_0_0_#2563eb]"
+        style={{ y: yImage }}
+        initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+        whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
+        viewport={{ once: false, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: "backOut", delay: 0.2 }}
+        whileHover={{ scale: 1.05 }}
+      >
+        <Image 
+          src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=2500" 
+          alt="Node Coffee Interior" 
+          fill
+          priority
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="object-cover filter contrast-125 transition-transform duration-700"
+        />
+      </motion.div>
+
+      {/* Coffee Editorial Typography */}
+      <motion.div 
+        className="relative z-20 flex flex-col items-start px-6 lg:px-20 w-full mt-4"
+        style={{ opacity: opacityText, y: yText }}
+      >
+        
+        <div className="overflow-hidden z-10 mb-4 -ml-2">
+          <motion.h1 
+            initial={{ x: "-100%" }}
+            whileInView={{ x: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.8, ease: "backOut" }}
+            className="font-serif italic font-medium text-4xl sm:text-5xl md:text-6xl lg:text-[5vw] xl:text-[5vw] leading-none text-blue-600 bg-white dark:bg-slate-900 px-4 sm:px-5 py-2 border-4 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#2563eb]"
+          >
+            Node Coffee.
+          </motion.h1>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -50, rotate: -5 }}
+          whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8, ease: "backOut", delay: 0.1 }}
+          whileHover={{ scale: 1.05, rotate: 2 }}
+          className="mb-4 sm:mb-6 inline-block bg-blue-600 text-white font-bold tracking-[0.2em] uppercase text-[10px] sm:text-xs md:text-sm px-3 sm:px-4 py-1 sm:py-1.5 border-2 border-slate-900 dark:border-white origin-left cursor-default"
+        >
+          COWORKING SPACE YOGYAKARTA
+        </motion.div>
+
+        <div className="flex flex-col items-start gap-2 sm:gap-3">
+          <div className="overflow-hidden">
+            <motion.h1 
+              initial={{ y: "100%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.8, ease: "backOut", delay: 0.2 }}
+              className="font-sans font-black text-4xl sm:text-5xl md:text-7xl lg:text-[6.5vw] xl:text-[6.5vw] leading-[0.9] tracking-tighter text-slate-900 dark:text-white uppercase"
+            >
+              Belajar Ngebut,
+            </motion.h1>
+          </div>
+          
+          <div className="overflow-hidden">
+            <motion.h1 
+              initial={{ y: "100%" }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.8, ease: "backOut", delay: 0.3 }}
+              className="font-sans font-black text-4xl sm:text-5xl md:text-7xl lg:text-[6.5vw] xl:text-[6.5vw] leading-[0.9] tracking-tighter text-white dark:text-slate-900 uppercase bg-slate-900 dark:bg-white px-4 sm:px-5 py-2 border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#2563eb] md:shadow-[6px_6px_0_0_#2563eb]"
+            >
+              Kerja Tetap Fokus.
+            </motion.h1>
           </div>
         </div>
 
-        {/* Nav Buttons */}
-        <button className="hero-nav-btn hero-nav-btn--prev" onClick={scrollPrev} aria-label="Slide sebelumnya" type="button">
-          <ChevronLeft size={20} />
-        </button>
-        <button className="hero-nav-btn hero-nav-btn--next" onClick={scrollNext} aria-label="Slide berikutnya" type="button">
-          <ChevronRight size={20} />
-        </button>
-      </div>
-
-      {/* ── Content ── */}
-      <div className="container hero-content">
-        <div className="hero-text-block">
-          <div className="ov">Ruang kerja nyaman untuk mahasiswa &amp; freelancer</div>
-          <h1>
-            Belajar ngebut,<br />
-            <em>kerja tetap fokus.</em>
-          </h1>
-          <p className="sub">
-            Wi-Fi stabil, banyak colokan, dan suasana tenang.
-            Pesan cepat tanpa antre — cocok untuk tugas, deadline, dan meeting.
-          </p>
-
-          <div className="hero-info">
-            <span><Tag size={13} className="icon" aria-hidden="true" />Mulai Rp 15.000</span>
-            <span><MapPin size={13} className="icon" aria-hidden="true" />5 menit dari AMIKOM</span>
-            <span><Clock size={13} className="icon" aria-hidden="true" />Buka 07.00–23.00</span>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.8, ease: "backOut", delay: 0.3 }}
+          className="mt-8 md:mt-10"
+        >
+          <div className="bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white shadow-[6px_6px_0_0_#2563eb] p-5 md:p-6 mb-8 max-w-xl">
+            <p className="text-base md:text-lg text-slate-900 dark:text-white font-semibold leading-relaxed">
+              Titik temu produktivitas dan sajian kopi cepat di Jogja. Nikmati kopi lokal premium tanpa antrean panjang lewat sistem <span className="bg-blue-600 text-white px-2 py-0.5 mx-1">self-ordering</span>, didukung fasilitas coworking space dengan <span className="bg-blue-600 text-white px-2 py-0.5 whitespace-nowrap mx-1">Wi-Fi 6</span> untuk hajar semua deadline-mu.
+            </p>
           </div>
-
-          <div className="acts">
-            <a href="#lead" className="cta cta-lg" onClick={(e) => handleScroll(e, '#lead')} id="hero-voucher-btn">
-              Klaim Voucher Kopi <ArrowRight size={16} />
+          
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <a href="#lead" className="w-full sm:w-auto text-center bg-blue-600 text-white font-black text-sm md:text-base px-8 py-4 border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#0f172a] dark:shadow-[4px_4px_0_0_#ffffff] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase">
+              Klaim Voucher Kopi
             </a>
-            <a href="#menu" className="cta-o" onClick={(e) => handleScroll(e, '#menu')} id="hero-menu-btn">
-              Lihat Menu &amp; Harga
+            <a href="#fasilitas" className="w-full sm:w-auto text-center bg-white dark:bg-slate-950 text-slate-900 dark:text-white font-black text-sm md:text-base px-8 py-4 border-2 border-slate-900 dark:border-white shadow-[4px_4px_0_0_#2563eb] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase">
+              Lihat Ketersediaan Meja
             </a>
           </div>
-        </div>
+        </motion.div>
+      </motion.div>
 
-        {/* ── Indikator + Progress (BAWAH) ── */}
-        <div className="hero-bottom-bar">
-          <div className="hero-indicators" aria-label="Slide indicator">
-            {HERO_IMAGES.map((_, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`hero-dot${index === selectedIndex ? ' active' : ''}`}
-                onClick={() => emblaApi?.scrollTo(index)}
-                aria-label={`Slide ${index + 1}`}
-                aria-current={index === selectedIndex ? 'true' : undefined}
-              >
-                {index === selectedIndex && (
-                  <span className="hero-dot-progress" style={{ width: `${progress}%` }} />
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="hero-metrics" aria-label="Statistik Node Coffee">
-            <div className="m"><div className="v">±4 menit</div><div className="l">Pesanan siap</div></div>
-            <div className="m"><div className="v">1 Gbps</div><div className="l">Wi-Fi stabil</div></div>
-            <div className="m">
-              <div className="v" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                4.9<Star size={16} fill="currentColor" strokeWidth={0} />
-              </div>
-              <div className="l">320+ review</div>
-            </div>
-            <div className="m"><div className="v">1.200+</div><div className="l">Member aktif</div></div>
-          </div>
-        </div>
+      {/* Marquee Banner - Blue & White */}
+      <div className="absolute bottom-0 left-0 w-full border-t-4 border-slate-900 dark:border-white bg-blue-600 overflow-hidden z-30 flex items-center py-2">
+        <motion.div 
+          animate={{ x: [0, -1000] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 15 }}
+          className="flex whitespace-nowrap font-black uppercase text-lg tracking-widest text-white"
+        >
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+          <span className="mx-4">• KOPI NUSANTARA • WI-FI 6 (1 GBPS) • SELF-ORDERING • 100% CASHLESS • COWORKING SPACE</span>
+        </motion.div>
       </div>
     </section>
   )

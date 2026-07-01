@@ -1,212 +1,54 @@
 'use client'
 
-import { useState } from 'react'
-import {
-  Gift, ShieldCheck, Check,
-  MapPin, Building2, Clock, Navigation, Car, AlertTriangle, SendHorizonal,
-  Wifi, Zap, Coffee, Frown, CheckCircle2
-} from 'lucide-react'
-
-const pasItems = [
-  {
-    type: 'p',
-    label: 'Masalah',
-    icon: <Frown size={20} strokeWidth={2.5} />,
-    title: 'Kafe ramai, koneksi tidak stabil, colokan terbatas.',
-    desc: 'Tempat kerja cepat penuh, Wi-Fi terbagi, dan antrean bikin waktu terbuang.',
-  },
-  {
-    type: 'a',
-    label: 'Dampak',
-    icon: <Clock size={20} strokeWidth={2.5} />,
-    title: 'Tugas tertunda, deadline mepet.',
-    desc: 'Video call patah, upload gagal, dan fokus kerja pecah.',
-  },
-  {
-    type: 's',
-    label: 'Solusi',
-    icon: <CheckCircle2 size={20} strokeWidth={2.5} />,
-    title: 'Node Coffee: koneksi stabil, pesanan cepat, meja siap kerja.',
-    desc: 'Self-ordering ringkas, stop kontak di tiap meja, dan suasana yang mendukung fokus.',
-  },
-]
-
-const benefits = [
-  { icon: Coffee,  text: 'Berlaku semua menu kopi hot/iced' },
-  { icon: Zap,     text: 'Langsung terdaftar sebagai member' },
-  { icon: Wifi,    text: 'Update promo dan diskon pelajar' },
-]
-
-type FormStatus = 'idle' | 'success' | 'error'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function LeadSection() {
-  const [email, setEmail]   = useState('')
-  const [status, setStatus] = useState<FormStatus>('idle')
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "center center"]
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email.trim() || !email.includes('@')) {
-      setStatus('error')
-      setTimeout(() => setStatus('idle'), 2500)
-      return
-    }
-    setStatus('success')
-    setEmail('')
-    setTimeout(() => setStatus('idle'), 3500)
-  }
-
-  const btnContent = () => {
-    if (status === 'success') return <><Check size={16} /> Voucher Terkirim!</>
-    if (status === 'error')   return <><AlertTriangle size={16} /> Masukkan email yang valid</>
-    return <><SendHorizonal size={16} /> Kirim Voucher Sekarang</>
-  }
+  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1])
+  const rotate = useTransform(scrollYProgress, [0, 1], [-2, 0])
 
   return (
-    <section className="sec sec-dark" id="lead" aria-label="Klaim Voucher & Lokasi">
-      <div className="container">
+    <section className="py-32 bg-white dark:bg-slate-950 transition-colors duration-500 overflow-hidden border-b-4 border-slate-900 dark:border-white" id="lead" ref={containerRef}>
+      <div className="max-w-[70rem] mx-auto px-6">
+        <motion.div 
+          style={{ scale, rotate }}
+          className="relative border-4 border-slate-900 dark:border-white bg-blue-600 text-white min-h-[50vh] flex flex-col items-center justify-center text-center p-12 shadow-[12px_12px_0_0_#0f172a] dark:shadow-[12px_12px_0_0_#ffffff] transition-all"
+        >
+          {/* Noise overlay */}
+          <div className="absolute inset-0 opacity-[0.2] bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] pointer-events-none"></div>
 
-        {/* ── Section Header ── */}
-        <div className="lead-section-header reveal">
-          <div className="tag">Kenapa Node Coffee?</div>
-          <h2 className="stl">
-            Tempat yang <em>benar-benar</em> mendukung<br />
-            produktivitasmu.
-          </h2>
-          <p className="sdsc lead-sdsc">
-            Dirancang untuk mahasiswa dan freelancer yang butuh fokus—bukan sekadar tempat duduk.
-          </p>
-        </div>
-
-        {/* ── PAS Cards ── */}
-        <div className="pas-grid reveal">
-          {pasItems.map((item) => (
-            <div className={`pas ${item.type}`} key={item.type}>
-              <span className="pas-icon">{item.icon}</span>
-              <span className="lb">{item.label}</span>
-              <h4>{item.title}</h4>
-              <p>{item.desc}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Lead + Location Grid ── */}
-        <div className="lead-grid reveal">
-
-          {/* Kiri: Voucher Info */}
-          <div className="lead-voucher-col">
-            <div className="tag">Penawaran Terbatas</div>
-            <h2 className="stl">
-              Voucher Kopi<br />
-              <em>Rp 22.000</em>
+          <div className="relative z-10 w-full">
+            <h2 className="font-sans font-black text-4xl md:text-6xl tracking-tighter leading-[1] mb-6 uppercase text-white">
+              Klaim Voucher <br/>
+              <span className="font-serif italic text-slate-900">Kerja Nyaman.</span>
             </h2>
-            <p className="lead-sub">
-              Daftar sekarang dan nikmati kopi gratis di kunjungan pertama Anda.
+            <p className="text-lg font-medium mb-10 max-w-xl mx-auto bg-slate-900 text-white p-4 border-2 border-white shadow-[4px_4px_0_0_#ffffff] rotate-1">
+              Tinggalkan emailmu dan dapatkan potongan Rp 22.000 untuk pembelian pertamamu di Node Coffee. Datang, klaim, dan langsung fokus berkarya!
             </p>
-            <ul className="b-list">
-              {benefits.map(({ icon: Icon, text }) => (
-                <li key={text}>
-                  <div className="ck" aria-hidden="true">
-                    <Icon size={10} />
-                  </div>
-                  {text}
-                </li>
-              ))}
-            </ul>
 
-            {/* Trust badge */}
-            <div className="lead-trust">
-              <ShieldCheck size={13} />
-              Sudah dipercaya <strong>1.200+ member aktif</strong>
-            </div>
+            <form className="w-full max-w-xl mx-auto relative flex flex-col sm:flex-row gap-3">
+              <input 
+                type="email" 
+                placeholder="EMAIL ADDRESS" 
+                aria-label="Email address for voucher"
+                className="flex-1 bg-white dark:bg-slate-900 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white px-5 py-4 outline-none focus:bg-slate-50 dark:focus:bg-slate-800 transition-colors font-black text-lg uppercase placeholder:text-slate-400"
+                required
+              />
+              <button 
+                type="submit" 
+                className="bg-slate-900 text-white border-2 border-slate-900 dark:border-white font-black text-sm md:text-base px-6 py-4 uppercase hover:bg-white hover:text-slate-900 transition-colors shadow-[4px_4px_0_0_#ffffff] dark:shadow-[4px_4px_0_0_#ffffff]"
+              >
+                AMBIL VOUCHER RP22.000
+              </button>
+            </form>
           </div>
-
-          {/* Tengah: Form Card */}
-          <div>
-            <div className="f-card">
-              <div className="f-card-header">
-                <div className="ft">Klaim Voucher Kopi</div>
-                <div className="fs">Voucher langsung dikirim ke email Anda.</div>
-              </div>
-
-              <div className="save-badge">
-                <Gift size={15} />
-                Voucher kopi senilai <strong>Rp 22.000</strong>
-              </div>
-
-              <form onSubmit={handleSubmit} noValidate>
-                <label htmlFor="voucher-email-input" className="fi-label">
-                  Alamat Email
-                </label>
-                <input
-                  type="email"
-                  className={`fi${status === 'error' ? ' fi-error' : ''}`}
-                  placeholder="nama@email.com"
-                  aria-label="Alamat email untuk voucher"
-                  id="voucher-email-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={status === 'success'}
-                />
-                <button
-                  type="submit"
-                  className="fb"
-                  id="voucher-submit-btn"
-                  disabled={status === 'success'}
-                  style={
-                    status === 'success' ? { background: 'linear-gradient(135deg,#10B981,#059669)' }
-                    : status === 'error'  ? { background: 'linear-gradient(135deg,#EF4444,#DC2626)' }
-                    : {}
-                  }
-                >
-                  {btnContent()}
-                </button>
-              </form>
-
-              <p className={`fn${status === 'success' ? ' success' : ''}`}>
-                <ShieldCheck size={11} style={{ display: 'inline', marginRight: 4, verticalAlign: 'middle' }} />
-                Email tidak dibagikan. Berhenti kapan saja.
-              </p>
-            </div>
-          </div>
-
-          {/* Kanan: Location Card */}
-          <div id="lokasi">
-            <div className="loc-card">
-              <h4>
-                <MapPin size={16} className="icon" />
-                Lokasi &amp; Jam Buka
-              </h4>
-              <div className="loc-row">
-                <Building2 size={15} className="icon" />
-                <div>
-                  Jl. Ring Road Utara, Condongcatur,<br />
-                  Sleman, Yogyakarta 55283
-                </div>
-              </div>
-              <div className="loc-row">
-                <Clock size={15} className="icon" />
-                <div>Senin–Minggu, 07.00–23.00 WIB</div>
-              </div>
-              <div className="loc-row">
-                <Navigation size={15} className="icon" />
-                <div>5 menit dari AMIKOM · 8 menit dari UPN · 10 menit dari UGM</div>
-              </div>
-              <div className="loc-row">
-                <Car size={15} className="icon" />
-                <div>Parkir motor &amp; mobil tersedia</div>
-              </div>
-              <div className="map-wrap">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.2!2d110.4!3d-7.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDUnMDAuMCJTIDExMMKwMjQnMDAuMCJF!5e0!3m2!1sid!2sid!4v1"
-                  title="Lokasi Node Coffee di Google Maps"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
