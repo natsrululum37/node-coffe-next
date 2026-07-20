@@ -42,3 +42,11 @@ next-env.d.ts
 
 # agents
 .agents/
+
+
+# Docs
+*.pdf
+UTS_DB_*.md
+UAS_DB_*.md
+Laporan_Analitik_Node_Coffee.md
+laporan_analitik_google/
