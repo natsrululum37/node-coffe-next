@@ -1,42 +1,63 @@
-# Node Coffee — Kafe Produktif & Coworking Space
+<div align="center">
+  <h1>☕ Node Coffee</h1>
+  <p><strong>Kafe Produktif & Coworking Space di Yogyakarta</strong></p>
 
-Landing page interaktif bergaya Neo-Brutalism untuk Node Coffee, sebuah kafe produktif dan *coworking space* di Yogyakarta. Proyek ini dibangun menggunakan **Next.js 16 (App Router)** dan ditujukan sebagai tugas mata kuliah Bisnis Digital.
+  <!-- Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/Next.js_14-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind" />
+    <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+    <img src="https://img.shields.io/badge/GA4-E37400?style=for-the-badge&logo=google-analytics&logoColor=white" alt="Google Analytics" />
+  </p>
+</div>
 
-## Fitur Utama
+<br/>
 
-- **Desain Neo-Brutalism**: Tata letak yang berani, kontras tinggi, dan bayangan tebal khas antarmuka Brutalisme modern.
-- **Dark Mode & Light Mode**: Peralihan mode warna secara dinamis yang menyesuaikan preferensi sistem.
-- **Scroll & Animasi Interaktif**: Memanfaatkan `framer-motion` dan `Lenis` untuk transisi halaman yang mulus dan *reveal animation*.
-- **Marquee Testimoni**: Korsel gulir otomatis tanpa akhir menggunakan `embla-carousel-react` dengan fitur seret interaktif (*draggable*).
-- **Google Analytics (GA4)**: Terintegrasi penuh dengan pustaka pihak ketiga `@next/third-parties` untuk mengumpulkan data pengunjung (Tugas *Digital Business*).
-- **Responsif Sempurna**: Dioptimalkan dari layar *mobile* yang kecil hingga layar *desktop* yang sangat lebar (Ulta-Wide).
+Landing page interaktif bergaya **Neo-Brutalism** untuk Node Coffee. Proyek ini dibangun menggunakan arsitektur modern web (Next.js App Router) dan ditujukan sebagai *showcase* integrasi antara pengembangan antarmuka (UI/UX) dan pelacakan metrik bisnis digital.
 
-## Teknologi yang Digunakan
+## ✨ Fitur Utama
 
-- [Next.js](https://nextjs.org/) (App Router, Server Components)
-- [Tailwind CSS](https://tailwindcss.com/) (Styling & Dark Mode)
-- [Framer Motion](https://www.framer.com/motion/) (Animasi)
-- [Lenis](https://lenis.studiofreight.com/) (Smooth Scrolling)
-- [Embla Carousel](https://www.embla-carousel.com/) (Marquee & Carousel)
-- [Lucide React](https://lucide.dev/) (Ikon)
+- **Desain Neo-Brutalism**: Tata letak berani, kontras tinggi, dan elemen bayangan tebal khas antarmuka web modern.
+- **Dark Mode & Light Mode**: Peralihan mode tema warna secara dinamis (`next-themes`).
+- **Scroll & Animasi Interaktif**: Memanfaatkan `framer-motion` dan `Lenis` untuk efek parallax dan *reveal animation*.
+- **Marquee Testimoni**: Komponen *carousel* gulir otomatis (interaktif & *draggable*) menggunakan `embla-carousel-react`.
+- **Ultra-Responsive**: Presisi *layout* dari layar *mobile* terkecil hingga monitor Ultra-Wide.
 
-## Menjalankan Proyek Secara Lokal
+## 🚀 Optimasi Skalabilitas & Analitik Bisnis
 
-Pastikan Anda memiliki [Node.js](https://nodejs.org/) yang terpasang di komputer Anda.
+Proyek ini tidak hanya mementingkan aspek visual, melainkan juga dibekali dengan strategi skala bisnis (*Scale-Up*):
 
-1. **Instal dependensi:**
+1. **Google Analytics (GA4) Integration** 📊
+   - Perekaman kunjungan (*page views*) dan metrik *engagement* menggunakan pustaka `@next/third-parties/google`.
+2. **Conversion Rate Optimization (CRO)** 🎯
+   - Implementasi `sendGAEvent` secara langsung (*Custom Events*) pada komponen aksi seperti tombol "Klaim Voucher" untuk melacak konversi (*leads*).
+3. **Advanced SEO Metadata** 🔍
+   - Penanaman struktur meta *keywords* dan *Open Graph* di `layout.tsx` untuk menunjang performa organik pada Search Engine dan saat *link* dibagikan di media sosial.
+
+## 💻 Teknologi yang Digunakan
+
+- **Framework**: [Next.js](https://nextjs.org/) (React)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Animasi**: [Framer Motion](https://www.framer.com/motion/)
+- **Smooth Scroll**: [Lenis](https://lenis.studiofreight.com/)
+- **Ikonografi**: [Lucide React](https://lucide.dev/)
+
+## 🛠️ Menjalankan Proyek Secara Lokal
+
+Pastikan [Node.js](https://nodejs.org/) versi terbaru telah terpasang.
+
+1. **Klon / Unduh repositori ini.**
+2. **Instal dependensi:**
    ```bash
    npm install
    ```
-
-2. **Jalankan server pengembangan:**
+3. **Jalankan server pengembangan:**
    ```bash
    npm run dev
    ```
+4. Buka [http://localhost:3000](http://localhost:3000) di *browser* Anda.
 
-3. Buka [http://localhost:3000](http://localhost:3000) di *browser* Anda.
+## 🌐 Deployment
 
-## Penugasan & Deployment
-
-Proyek ini telah dikonfigurasi untuk siap *deploy* ke [Vercel](https://vercel.com).
-Semua pengoptimalan gambar, pelacakan analitik, dan SEO sudah disesuaikan dengan praktik terbaik (*Best Practices*). Laporan *Lighthouse* mencapai **95-100** di semua metrik.
+Proyek ini telah dikonfigurasi (*Zero-Config*) untuk langsung di-*deploy* melalui [Vercel](https://vercel.com).
+Seluruh pengoptimalan gambar, penyajian *font*, dan analitik sudah disesuaikan dengan pedoman Web Vitals (*Best Practices*).
