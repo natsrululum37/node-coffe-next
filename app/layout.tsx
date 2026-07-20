@@ -22,6 +22,12 @@ const libreBodoni = Libre_Bodoni({
 export const metadata: Metadata = {
   title: 'Node Coffee — Kafe Produktif & Coworking Space di Yogyakarta',
   description: 'Node Coffee adalah kafe coworking di Yogyakarta dengan Wi-Fi 6 1 Gbps, self-ordering kiosk, dan kopi single origin.',
+  keywords: ['coworking space yogyakarta', 'cafe produktif jogja', 'node coffee', 'wifi cepat', 'tempat nugas jogja'],
+  openGraph: {
+    title: 'Node Coffee — Coworking Space Yogyakarta',
+    description: 'Tingkatkan produktivitasmu dengan Wi-Fi 1 Gbps dan kopi single origin.',
+    type: 'website',
+  }
 }
 
 export default function RootLayout({

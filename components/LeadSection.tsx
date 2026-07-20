@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { sendGAEvent } from '@next/third-parties/google'
 
 export default function LeadSection() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -42,6 +43,7 @@ export default function LeadSection() {
               />
               <button 
                 type="submit" 
+                onClick={() => sendGAEvent({ event: 'generate_lead', value: 'voucher_22k' })}
                 className="bg-slate-900 text-white border-2 border-slate-900 dark:border-white font-black text-sm md:text-base px-6 py-4 uppercase hover:bg-white hover:text-slate-900 transition-colors shadow-[4px_4px_0_0_#ffffff] dark:shadow-[4px_4px_0_0_#ffffff]"
               >
                 AMBIL VOUCHER RP22.000
